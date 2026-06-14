@@ -18,9 +18,12 @@
             color: #1153bd;
             cursor: default;
             margin: 0;
-            height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory; /* force snapping for effect on section transitions */
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            scroll-snap-type: y proximity;
+            padding-top: 116px;
+            padding-bottom: 0;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -42,7 +45,7 @@
             left: -5%;
             width: 110%;
             height: 110%;
-            background-image: url('background.jpg');
+            background-image: url('Asserts/background.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: relative;
@@ -78,6 +81,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
             object-fit: cover;
             z-index: 1000;
+            display: block;
         }
 
         .toggle-btn {
@@ -117,17 +121,12 @@
             z-index: 950;
         }
 
-        body {
-            padding-top: 116px;
-            padding-bottom: 0;
-        }
-
         .container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 1rem 2rem 2rem;
             margin-left: 90px;
-            margin-top: 100px;
+            margin-top: 1rem;
             margin-bottom: 80px;
             z-index: 901;
         }
@@ -187,13 +186,15 @@
 
 
         section {
-            height: 100vh;                /* each section fills the screen */
-            scroll-snap-align: start;     /* always snap to the top */
-            padding: 1rem 2rem;
-            padding-top: 116px;
+            min-height: 100vh;
+            scroll-snap-align: start;
+            padding: 2rem 2rem 3rem;
+            padding-top: 2rem;
             margin-left: 120px;
-            margin-top: 0;
-            margin-bottom: 0;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         section.active {
@@ -358,10 +359,125 @@
         button:hover {
             background-color: #146EB4;
         }
+
+        @media (max-width: 900px) {
+            body {
+                padding-top: 0;
+            }
+
+            header {
+                position: sticky;
+                top: 0;
+                z-index: 1001;
+            }
+
+            .profile-pic {
+                position: relative;
+                top: auto;
+                right: auto;
+                display: block;
+                margin: 1rem auto 0.75rem;
+                width: 120px;
+                height: 120px;
+            }
+
+            .toggle-btn {
+                position: relative;
+                top: auto;
+                right: auto;
+                display: block;
+                margin: 0 auto 1rem;
+            }
+
+            nav {
+                position: sticky;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: auto;
+                padding: 0.5rem 1rem;
+                background: rgba(20, 110, 180, 0.95);
+                backdrop-filter: blur(8px);
+                z-index: 1000;
+            }
+
+            nav ul {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .nav-btn {
+                width: auto;
+                min-width: 90px;
+                height: auto;
+                padding: 0.45rem 0.75rem;
+                border-radius: 999px;
+            }
+
+            .nav-text {
+                margin-left: 0;
+                font-size: 0.75rem;
+            }
+
+            .container {
+                margin-left: 0;
+                margin-top: 0;
+                padding: 1rem;
+            }
+
+            section {
+                margin-left: 0;
+                padding: 1.25rem 1rem 2rem;
+                min-height: auto;
+                height: auto;
+                border-radius: 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.7rem;
+            }
+
+            header p {
+                font-size: 1.05rem;
+            }
+
+            .profile-pic {
+                width: 100px;
+                height: 100px;
+            }
+
+            .nav-btn {
+                min-width: 72px;
+                padding: 0.4rem 0.5rem;
+            }
+
+            .nav-icon {
+                font-size: 1.05rem;
+            }
+
+            .nav-text {
+                font-size: 0.68rem;
+            }
+
+            section {
+                padding: 1rem 0.75rem 1.5rem;
+            }
+
+            .experience-item,
+            .education-item,
+            .project-card,
+            .skill-item {
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <div id="background"></div>    <div class="custom-cursor" id="customCursor">HIRE ME</div>    <img src="photo.jpg" alt="Ragunathan.K" class="profile-pic">   
+    <div id="background"></div>    <div class="custom-cursor" id="customCursor">HIRE ME</div>    <img src="Asserts/photo.jpg" alt="Ragunathan.K" class="profile-pic">   
     <button id="toggleCursor" class="toggle-btn">Enable</button>
 
     <header>
@@ -384,7 +500,13 @@
     <section id="about">
             <h2>About Me</h2>
             <div class="content-box">
-                <p>Dynamic and adaptable professional transitioning into cloud computing, with a strong academic background in Mechanical Engineering and additional training in Computer Applications (HDCA). Certified as an AWS Solutions Architect Associate (89%) and AWS Cloud Practitioner (100%), with foundational knowledge of Linux administration and Python scripting. Experienced in supervision, data management, and workflow optimization, demonstrating problem-solving, documentation, and team collaboration skills. Eager to leverage cloud expertise, technical certifications, and proven organizational abilities to design secure, scalable, and efficient AWS solutions</p>
+                <p>AWS Certified Solutions Architect – Associate (89%) and AWS Cloud Practitioner (100%) with hands-on 
+experience building serverless AWS architectures using Lambda, API Gateway, DynamoDB, Cognito, 
+CloudFormation, CloudFront, CloudWatch, and IAM. Designed and deployed a production-ready serverless 
+journal application with CI/CD pipeline integration on GitHub. Familiar with Python scripting and Linux command
+line operations. Following a deliberate career transition from 2+ years of IT operations experience, actively 
+seeking an entry-level cloud support, technical support, or IT support role to apply and grow AWS expertise. 
+Immediately available and open to all locations across India</p>
             </div>
         </section>
 
@@ -451,25 +573,28 @@
         <section id="experience">
             <h2>Professional Experience</h2>
             <div class="experience-item">
-                <h3>Supervisor</h3>
-                <p>Sri Sai Fusion Techno Works - Kanchipuram, Tamil Nadu</p>
-                <p>April 2023 to December 2025</p>
+                <h3>Operations Support Associate</h3>
+                <p>Sri Sai Fusion Techno Works — Chennai, Tamil Nadu | Full-time</p>
+                <p>April 2023 – December 2025</p>
                 <ul>
-                    <li>Optimized shift and load planning, improving overall team productivity by approximately 10–12%.</li>
-                    <li>Automated reporting with Excel formulas and dashboards, reducing manual errors by 15% and improving month‑end accuracy by 20%.</li>
-                    <li>Developed Excel‑based payroll and attendance tracker with automated formulas, improving accuracy by 20% and cutting manual work by hours each week.</li>
-                    <li>Monitored employee performance and welfare, resulting in improved workforce reliability and reduced absenteeism by ~8–10%.</li>
-                    <li>Delegated tasks strategically based on team strengths, enhancing task completion efficiency and reducing delays by ~10%.</li>
+                    <li>Coordinated a 20-member team, streamlining workflows and resource allocation, increasing productivity by 12%.</li>
+                    <li>Directed daily data entry and reporting operations, achieving 11% improvement in accuracy and consistency.</li>
+                    <li>Created monthly performance reports and forecasts, reducing reporting delays by 10% and supporting senior-level planning.</li>
+                    <li>Oversaw task assignment and cross-team coordination, reducing task completion delays by 9%.</li>
+                    <li>Maintained documentation, invoicing, and compliance records, improving communication accuracy by 8%.</li>
+                    <li>Monitored team performance metrics applying tracking techniques transferable to IT operations monitoring, boosting operational reliability by 7%.</li>
                 </ul>
             </div>
             <div class="experience-item">
-                <h3>Govt. TNSTC Apprentice</h3>
-                <p>TNSTC Kanchipuram - Kanchipuram, Tamil Nadu</p>
-                <p>January 2024 to January 2025</p>
+                <h3>Graduate Engineer Trainee – IT Systems (NATS)</h3>
+                <p>Tamil Nadu State Transport Corporation (Villupuram) Limited (TNSTC) — Kanchipuram, Tamil Nadu | Full-time (concurrent with above role) | NATS Certified</p>
+                <p>January 2024 – January 2025</p>
                 <ul>
-                    <li>Processed passenger passes and updated routes at the head office, ensuring accurate records and improving data efficiency by ~15%.</li>
-                    <li>Prepared budget estimates, progress reports, and cost tracking reports, supporting financial planning and reducing reporting delays by ~10%.</li>
-                    <li>Serviced and inspected bus engines and oil systems, improving operational reliability and reducing breakdowns by ~8%.</li>
+                    <li>Administered and updated government database systems for passenger records and route modifications, improving data accuracy by 15%.</li>
+                    <li>Maintained daily operational datasets (collections, consumption, departmental activities) across subsystems, improving accuracy by 12%.</li>
+                    <li>Coordinated with multiple departments to ensure data integration into centralized IT systems, enhancing workflow efficiency by 8%.</li>
+                    <li>Supported authentication and database management processes in government IT systems, reducing inconsistencies by 7%.</li>
+                    <li>Generated monthly performance and financial reports, streamlining planning cycles and cutting reporting delays by 10%.</li>
                 </ul>
             </div>
         </section>
