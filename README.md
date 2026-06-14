@@ -1,69 +1,68 @@
-# Portfolio Website — AWS CI/CD Pipeline
+# 🌐 Portfolio Website — AWS CI/CD Pipeline
 
-A personal portfolio website hosted on AWS, deployed and updated automatically through a CI/CD pipeline built with GitHub Actions. Every push to the `main` branch syncs the latest files directly to S3 and refreshes the CloudFront cache — no manual deployment steps required.
+A personal portfolio website hosted on AWS, deployed and updated automatically through a CI/CD pipeline built with GitHub Actions. Every push to `main` syncs the latest files directly to S3 and refreshes the CloudFront cache — no manual deployment steps required.
 
-**Live Site:** [https://d2az3sc5f38bmc.cloudfront.net/](https://d2az3sc5f38bmc.cloudfront.net/)
+🔗 **Live Site:** [https://d2az3sc5f38bmc.cloudfront.net/](https://d2az3sc5f38bmc.cloudfront.net/)
 
 ---
 
-## Architecture
+# 🏗️ Architecture
 
 ```
 Developer (local machine)
-      │
-      │ git push (main branch)
-      ▼
-GitHub Repository
-      │
-      │ triggers
-      ▼
+        │
+        │ git push (main branch)
+        ▼
+   GitHub Repository
+        │
+        │ triggers
+        ▼
 GitHub Actions Workflow
-      │
-      ├── Checkout repository code
-      ├── Configure AWS credentials (IAM user)
-      ├── Sync files to S3 bucket
-      └── Invalidate CloudFront cache
-      ▼
+        │
+        ├── 📥 Checkout repository code
+        ├── 🔑 Configure AWS credentials (IAM user)
+        ├── 📤 Sync files to S3 bucket
+        └── ♻️ Invalidate CloudFront cache
+        ▼
 Amazon S3 (Static Website Hosting)
-      │
-      ▼
-Amazon CloudFront (HTTPS CDN)
-      │
-      ▼
-End User
+        ▼
+Amazon CloudFront (HTTPS + CDN)
+        ▼
+      👤 End User
 ```
 
 ---
 
-## Tech Stack
+# ⚙️ CI/CD Pipeline
 
-- **Hosting:** Amazon S3 (Static Website Hosting)
-- **CDN / HTTPS:** Amazon CloudFront
-- **CI/CD:** GitHub Actions
-- **IAM:** Dedicated IAM user with scoped permissions (S3 + CloudFront invalidation)
-- **CLI Tooling:** AWS CLI (via `aws-actions/configure-aws-credentials`)
+This project uses GitHub Actions for fully automated deployment, defined in [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
 
----
+| Trigger | Action |
+|---|---|
+| Push to `main` (website files changed) | ✅ Sync to S3 → ♻️ Invalidate CloudFront cache |
+| Push touching only `.git/`, `.github/`, or `README.md` | 🚫 Workflow skipped — no wasted deployment |
 
-## CI/CD Pipeline
-
-The workflow is defined in [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
-
-**Trigger:** Runs on every push to `main`, except changes limited to `.git/`, `.github/`, or `README.md` — avoiding unnecessary deployments for non-website changes.
-
-**Steps:**
-
-1. **Checkout** — Pulls the latest repository code onto the GitHub-hosted runner.
-2. **Configure AWS Credentials** — Authenticates the runner using IAM access keys stored securely in GitHub Secrets.
-3. **Sync to S3** — Uploads changed files to the S3 bucket using `aws s3 sync`, excluding repository-only files (`.git/`, `.github/`, `README.md`) so the bucket only ever contains live website assets.
-4. **Invalidate CloudFront Cache** — Clears the CDN cache so visitors immediately see the latest deployed version.
+- ✅ Repository metadata (`.git/`, `.github/`, `README.md`) excluded from the S3 bucket
+- ✅ CloudFront cache invalidated after every successful deployment
+- ✅ AWS credentials stored securely in GitHub Secrets — never exposed in code
+- ✅ Non-sensitive config (region, distribution ID) managed via GitHub Variables
 
 ---
 
-## Repository Structure
+# ☁️ AWS Services Used
+
+| Service | Purpose |
+|---|---|
+| S3 | Static website hosting |
+| CloudFront | HTTPS delivery + CDN caching |
+| IAM | Scoped credentials for GitHub Actions access |
+
+---
+
+# 📁 Project Structure
 
 ```
-.
+Portfolio-Website/
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml      # CI/CD pipeline definition
@@ -78,18 +77,19 @@ The workflow is defined in [`.github/workflows/deploy.yml`](.github/workflows/de
 
 ---
 
-## Key Design Decisions
+# 🧩 Key Design Decisions & Challenges
 
-- **Reused existing IAM user (least-friction approach):** Rather than creating a new IAM user per project, an existing IAM user (already scoped with S3 and CloudFront permissions for personal AWS projects) was reused — keeping credential management simple for a free-tier account while remaining mindful of the least-privilege principle.
-- **Secrets vs. Variables:** Sensitive values (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`) are stored as encrypted GitHub Secrets. Non-sensitive configuration (`AWS_REGION`, `CLOUDFRONT_DISTRIBUTION_ID`) is stored as GitHub Variables, reflecting how these values would typically be managed in a production environment.
-- **Exclude patterns for a clean bucket:** The `aws s3 sync` command explicitly excludes `.git/`, `.github/`, and `README.md` to ensure only production-ready website assets are ever served from S3 — avoiding exposure of repository metadata.
-- **Path-based trigger filtering:** The workflow trigger uses negation patterns to skip runs that only touch documentation or pipeline configuration, reducing wasted CI minutes and keeping the deployment history meaningful.
-- **Cache invalidation on every deploy:** A CloudFront invalidation (`/*`) is run after every successful sync, ensuring users always receive the latest version without waiting for cache expiry.
+- 🔁 **Reused existing IAM user:** Instead of creating a new IAM user per project, an existing IAM user (already scoped with S3 and CloudFront permissions from a prior project) was reused — simplifying credential management for a personal/free-tier AWS account.
+- 🔐 **Secrets vs. Variables:** Sensitive values (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`) are stored as encrypted GitHub Secrets. Non-sensitive config (`AWS_REGION`, `CLOUDFRONT_DISTRIBUTION_ID`) is stored as GitHub Variables — reflecting real production practice.
+- 🧹 **Clean bucket via excludes:** Initial syncs accidentally pushed `.git/`, `.github/`, and `README.md` into the S3 bucket. Fixed by adding `--exclude` flags to `aws s3 sync`, ensuring only production-ready assets are ever served.
+- 🎯 **Smart trigger filtering:** Used negation patterns (`!.git/**`, `!.github/**`, `!README.md`) in the workflow's `paths` filter so documentation-only or pipeline-only changes don't trigger unnecessary deployments.
+- ♻️ **Cache invalidation on every deploy:** A CloudFront invalidation (`/*`) runs after every successful sync, ensuring visitors always see the latest version immediately.
 
 ---
 
-## Author
+# 👨‍💻 Author
 
 **Ragunathan K**
-AWS Certified Solutions Architect – Associate | AWS Certified Cloud Practitioner
+AWS Solutions Architect Associate (SAA-C03 | 89%)
+AWS Cloud Practitioner (CLF-C02 | 100%)
 [GitHub](https://github.com/Ragunathan2305)
