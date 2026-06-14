@@ -1,4 +1,4 @@
-name: Deploy Index.html to S3
+name: Deploy All   to S3
 
 
 
@@ -29,7 +29,10 @@ jobs:
 
       - name: Deploy to s3
         run: | 
-          aws s3 sync . s3://ragunathan.k-portfolio.staticwebsite-805855867556-ap-south-2-an
+          aws s3 sync . s3://ragunathan.k-portfolio.staticwebsite-805855867556-ap-south-2-an \
+          --exclude ".git/*" \
+          --exclude ".github/*" \
+          --exclude "README.md"
 
       - name: Invalidate CloudFront cache
         run: |
